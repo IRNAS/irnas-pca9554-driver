@@ -1,0 +1,16 @@
+# COPYRIGHT NOTICE: (c) 2022 Irnas. All rights reserved.
+# Author: Marko Sagadin <marko@irnas.eu>
+
+description: PCA9554 I2C-based GPIO expander
+
+compatible: "irnas,pca9554"
+
+include: [gpio-controller.yaml, i2c-device.yaml]
+
+properties:
+  "#gpio-cells":
+    const: 2
+
+gpio-cells:
+  - pin
+  - flags

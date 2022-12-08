@@ -1,4 +1,5 @@
-# This CMake file is picked by the Zephyr build system because it is defined
-# as the module CMake entry point (see zephyr/module.yml).
+# COPYRIGHT NOTICE: (c) 2022 Irnas. All rights reserved.
+#
+# Author: Marko Sagadin <marko@irnas.eu>
 
 add_subdirectory(drivers)
