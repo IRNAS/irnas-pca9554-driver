@@ -10,6 +10,11 @@ include: [gpio-controller.yaml, i2c-device.yaml]
 properties:
   "#gpio-cells":
     const: 2
+    description: |
+      Number of items to expect in a gpio-cells specifier. For example use see 
+      the app.overlay in samples/basic.
+      See https://docs.zephyrproject.org/3.1.0/build/dts/bindings.html#specifier-cell-names-cells
+      or zephyr/dts/bindings/gpio-controller.yaml for more info.
 
 gpio-cells:
   - pin

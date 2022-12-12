@@ -3,7 +3,8 @@
 This is a Zephyr driver for NXP's PCA9554/PCA9554A 8-bit I2C-bus and SMBus I/O
 port chip.
 
-It can be used with Zephyr's GPIO API.
+It can be used with Zephyr's GPIO API, which is described in Zephyr's
+[documentation](https://docs.zephyrproject.org/latest/hardware/peripherals/gpio.html).
 
 **IMPORTANT**: This driver was tested with `nrf-sdk v2.1.0.`
 
@@ -42,7 +43,8 @@ To use add below two snippets into your project's west.yml file and run
 ### Device tree
 
 To enable this driver you need to add below snippet into your DTS or overlay
-file.
+file, change `@27` and reg = `<0x27>` to be equal to the i2c address of the
+device. Other fields (besides label) should not change.
 
 ```yaml
 &i2c0 {
@@ -56,6 +58,25 @@ file.
     };
 };
 ```
+
+## Samples
+
+### Basic
+
+This sample demonstrates basic use of PCA9554. In summary it just toggles the
+PCA9554 pins 4-7 several times. It however does this with two different devices,
+first directly with the `pca9554` device and then by using `ledx` nodes and
+`gpio_dt_spec` structures.
+
+Sample can be built and flashed with below two commands:
+
+```shell
+west build -b nrf52840dk_nrf52840
+west flash
+```
+
+The sample is not limited to the above specific board, any board that has `i2c0`
+can be used.
 
 ### KConfig
 

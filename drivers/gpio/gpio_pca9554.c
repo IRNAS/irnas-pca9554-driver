@@ -16,15 +16,13 @@
 #include <zephyr/drivers/i2c.h>
 #include <zephyr/init.h>
 #include <zephyr/kernel.h>
+#include <zephyr/logging/log.h>
 #include <zephyr/sys/byteorder.h>
 #include <zephyr/sys/util.h>
 
 #include <gpio_utils.h>
 
-#define LOG_LEVEL CONFIG_GPIO_LOG_LEVEL
-#include <zephyr/logging/log.h>
-
-LOG_MODULE_REGISTER(gpio_pca9554);
+LOG_MODULE_REGISTER(gpio_pca9554, CONFIG_GPIO_LOG_LEVEL);
 
 /* Register definitions */
 #define REG_INPUT_PORT	 0x00
@@ -147,13 +145,13 @@ static int setup_pin_dir(const struct device *dev, gpio_pin_t pin, gpio_flags_t 
 /**
  * @brief Configure pin or port
  *
- * @param dev Device struct of the PCA9554
- * @param pin The pin number
- * @param flags Flags of pin or port
+ * @param[in] dev	Device struct of the PCA9554
+ * @param[in] pin	The pin number
+ * @param[in] flags	Flags of pin or port
  *
  * @return 0 if successful, failed otherwise
  */
-static int gpio_pca9554_config(const struct device *dev, gpio_pin_t pin, gpio_flags_t flags)
+static int gpio_pca9554_configure(const struct device *dev, gpio_pin_t pin, gpio_flags_t flags)
 {
 	struct gpio_pca9554_drv_data *const drv_data = dev->data;
 	const struct gpio_pca9554_config *const config = dev->config;
@@ -180,6 +178,15 @@ static int gpio_pca9554_config(const struct device *dev, gpio_pin_t pin, gpio_fl
 	return ret;
 }
 
+/**
+ * @brief Configure pin or port
+ *
+ * @param[in] dev	Device struct of the PCA9554
+ * @param[in] pin	The pin number
+ * @param[in] flags	Flags of pin or port
+ *
+ * @return 0 if successful, failed otherwise
+ */
 static int gpio_pca9554_port_get_raw(const struct device *dev, uint32_t *value)
 {
 	struct gpio_pca9554_drv_data *const drv_data = dev->data;
@@ -268,7 +275,7 @@ static int gpio_pca9554_pin_interrupt_configure(const struct device *dev, gpio_p
 }
 
 static const struct gpio_driver_api gpio_pca9554_drv_api_funcs = {
-	.pin_configure = gpio_pca9554_config,
+	.pin_configure = gpio_pca9554_configure,
 	.port_get_raw = gpio_pca9554_port_get_raw,
 	.port_set_masked_raw = gpio_pca9554_port_set_masked_raw,
 	.port_set_bits_raw = gpio_pca9554_port_set_bits_raw,
