@@ -1,61 +1,84 @@
-# irnas-projects-template
+# PCA9554 8-bit I2C-bus and SMBus I/O port driver
 
-IRNAS template for a GitHub repository. It comes with a [basic
-group](https://github.com/IRNAS/irnas-workflows-software/tree/dev/workflow-templates/basic)
-of CI workflows for release automation.
+This is a Zephyr driver for NXP's PCA9554/PCA9554A 8-bit I2C-bus and SMBus I/O
+port chip.
 
-## Checklist
+It can be used with Zephyr's GPIO API, which is described in Zephyr's
+[documentation](https://docs.zephyrproject.org/latest/hardware/peripherals/gpio.html).
 
-- [ ] Provide a concise and accurate description of your project in the GitHub
-  "description" field.
-- [ ] Provide a concise and accurate description of your project in this
-  `README.md` file, replace the title.
-- [ ] Ensure that your project follows [repository naming scheme](https://github.com/IRNAS/irnas-guidelines-docs/blob/dev/docs/github_projects_guidelines.md#repository-naming-scheme-).
-- [ ] Turn on `gitlint` tool by following the instructions [here](https://github.com/IRNAS/irnas-guidelines-docs/tree/dev/tools/gitlint).
-- [ ] Select the version of NCS in the `west.yaml` file, check the below section for
-  specifics.
-- [ ] Provide repository setup instructions, use template in _Setup_ section
-  below.
-- [ ] As the final step delete this checklist and commit changes.
+**IMPORTANT**: This driver was tested with `nrf-sdk v2.1.0.`
 
-## Setup
+**IMPORTANT**: This driver does not yet support interrupts, using functions like
+`gpio_pin_interrupt_configure` will not do anything.
 
-If not already set up, install west and other required tools.
-Follow the steps [here](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/gs_installing.html)
-from [Install the required tools](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/gs_installing.html#install-the-required-tools)
-up to (including) [Install west](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/gs_installing.html#install-the-required-tools).
+## Support
 
-Then follow these steps:
+This driver supports both PCA9554 and PCA9554A devices. The PCA9554A is
+identical to the PCA9554 except that the fixed I2C-bus address is different
+allowing up to sixteen of these devices (eight of each) on the same
+I2C-bus/SMBus.
 
-```bash
-west init -m https://github.com/IRNAS/<repo-name> <repo-name>
-cd <repo-name>/
-west update
-# remember to source zephyr env
-source zephyr/zephyr-env.sh
+## Usage
+
+To use add below two snippets into your project's west.yml file and run
+`west update`:
+
+1. In `remotes` section, if not already added:
+
+```yaml
+- name: irnas
+  url-base: https://github.com/irnas
 ```
 
-## west.yaml and name-allowlist
+2. In the `projects` section, select revision you need:
 
-The manifest file (`west.yaml`) that comes with this template by default only allows
-certain modules from Nordic's `sdk-nrf` and `sdk-zephyr` repositories, while
-ignoring/blocking others.
+```yaml
+- name: irnas-pca9554-driver
+    repo-path: irnas-pca9554-driver
+    path: irnas/irnas-pca9554-driver
+    remote: irnas
+    revision: v1.0.0
+```
 
-This means that a setup on the new machine and in CI is faster as `west update`
-the command does not clone all modules from mentioned repositories but only the ones
-that is needed.
+### Device tree
 
-Manifest file only allows modules that are commonly used by IRNAS, however this
-can be easily changed by uncommenting the required module and running `west update`.
+To enable this driver you need to add below snippet into your DTS or overlay
+file, change `@27` and reg = `<0x27>` to be equal to the i2c address of the
+device. Other fields (besides label) should not change.
 
-**IMPORTANT:** Such improvements do not come with some tradeoffs, there are now
-two things that a developer must take note of:
-1. If the application source code includes some headers from blocked modules or if
-   included headers use blocked modules you will get an error that will
-   complain about missing header files. In that case, you have to go to manifest
-   file, find commented module, run `west update`, return to the app folder, delete
-   build folder and build again.
-2. You need to manually keep revisions of `sdk-nrf` and `sdk-zephyr` projects in
-   sync: If you update `sdk-nrf` revision, open their repo in the GitHub, select
-   the used revision tag and check in the `west.yaml` what version of
-   `sdk-zepyhr` is used. Run `west update` after the change.
+```yaml
+&i2c0 {
+        pca9554: pca9554@27 {
+        compatible = "irnas,pca9554";
+        label = "pca9554";
+        reg = <0x27>;
+        gpio-controller;
+        #gpio-cells = <2>;
+        ngpios=<8>;
+    };
+};
+```
+
+## Samples
+
+### Basic
+
+This sample demonstrates basic use of PCA9554. In summary it just toggles the
+PCA9554 pins 4-7 several times. It however does this with two different devices,
+first directly with the `pca9554` device and then by using `ledx` nodes and
+`gpio_dt_spec` structures.
+
+Sample can be built and flashed with below two commands:
+
+```shell
+west build -b nrf52840dk_nrf52840
+west flash
+```
+
+The sample is not limited to the above specific board, any board that has `i2c0`
+can be used.
+
+### KConfig
+
+See [KConfig.pca9554](./drivers/gpio/Kconfig.pca9554) for possible configuration
+options.

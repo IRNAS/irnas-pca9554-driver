@@ -1,0 +1,19 @@
+# COPYRIGHT NOTICE: (c) 2022 Irnas. All rights reserved.
+# Author: Marko Sagadin <marko@irnas.eu>
+
+menuconfig GPIO_PCA9554
+	bool "PCA9554 I2C-based GPIO chip"
+	default y
+	depends on DT_HAS_IRNAS_PCA9554_ENABLED
+	depends on I2C
+	help
+	  Enable driver for PCA9554 I2C-based GPIO chip.
+
+if GPIO_PCA9554
+
+config GPIO_PCA9554_INIT_PRIORITY
+	int "Init priority"
+	default 70
+	help
+	  Device driver initialization priority.
+endif

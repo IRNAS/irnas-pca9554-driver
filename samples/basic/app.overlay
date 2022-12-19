@@ -1,0 +1,33 @@
+&i2c0 {
+        pca9554: pca9554@27 {
+        compatible = "irnas,pca9554";
+        label = "pca9554";
+        reg = <0x27>;
+        gpio-controller;
+        #gpio-cells = <2>;
+        ngpios=<8>;
+    };
+};
+
+/ {
+    pins {
+        compatible = "gpio-keys";
+
+        led4 {
+            gpios = <&pca9554 4 GPIO_ACTIVE_LOW>;
+		    label = "led4";
+        };
+        led5 {
+            gpios = <&pca9554 5 GPIO_ACTIVE_LOW>;
+		    label = "led5";
+        };
+        led6 {
+            gpios = <&pca9554 6 GPIO_ACTIVE_LOW>;
+		    label = "led6";
+        };
+        led7 {
+            gpios = <&pca9554 7 GPIO_ACTIVE_LOW>;
+		    label = "led7";
+        };
+    };
+};
