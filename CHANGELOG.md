@@ -6,9 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [1.0.0] - 2023-01-05
+
 ### Added
 
-- PCA9554 driver implementation which implements Zephyr's GPIO API. This driver
-  does not support interrupt functionality. This driver was tested with
-  `nrf-sdk v2.1.0.`.
-- Sample which shows basic use and configuration.
+-   PCA9554 driver implementation which implements Zephyr's GPIO API. This driver
+    does not support interrupt functionality. This driver was tested with
+    `nrf-sdk v2.1.0.`.
+-   Sample which shows basic use and configuration.
+
+[Unreleased]: https://github.com/IRNAS/irnas-pca9554-driver/compare/v1.0.0...HEAD
+
+[1.0.0]: https://github.com/IRNAS/irnas-pca9554-driver/compare/6f7a9b66a890d6ea1cd648d72d7a67404892e5f3...v1.0.0
