@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+### Changed
+
+-  Updated NCS version to `v2.2.0`. Resolved any issues connected with this and 
+   updated readme.
+
+### Removed
+
+-   `east.yml` file, `east` tool does not need it any more to function.
+
 ## [1.0.0] - 2023-01-05
 
 ### Added
