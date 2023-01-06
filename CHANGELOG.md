@@ -6,10 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [2.0.0] - 2023-01-06
+
 ### Changed
 
--  Updated NCS version to `v2.2.0`. Resolved any issues connected with this and 
-   updated readme.
+-   Updated NCS version to `v2.2.0`. Resolved any issues connected with this and 
+    updated readme.
 
 ### Removed
 
@@ -24,6 +26,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
     `nrf-sdk v2.1.0.`.
 -   Sample which shows basic use and configuration.
 
-[Unreleased]: https://github.com/IRNAS/irnas-pca9554-driver/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/IRNAS/irnas-pca9554-driver/compare/v2.0.0...HEAD
+
+[2.0.0]: https://github.com/IRNAS/irnas-pca9554-driver/compare/v1.0.0...v2.0.0
 
 [1.0.0]: https://github.com/IRNAS/irnas-pca9554-driver/compare/6f7a9b66a890d6ea1cd648d72d7a67404892e5f3...v1.0.0
