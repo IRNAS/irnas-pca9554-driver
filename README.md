@@ -37,7 +37,7 @@ To use add below two snippets into your project's west.yml file and run
     repo-path: irnas-pca9554-driver
     path: irnas/irnas-pca9554-driver
     remote: irnas
-    revision: v1.0.0
+    revision: v2.0.0
 ```
 
 ### Device tree
