@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+### Added
+
+-   Add i2c presence check at gpio pca9554 init. That way an error message is 
+    logged, if pca9554 chip is not present on the i2c bus.
+
+### Changed
+
+-   Make log messages lower-case, for consistency.
+
 ## [2.0.0] - 2023-01-06
 
 ### Changed
