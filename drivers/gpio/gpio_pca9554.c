@@ -284,6 +284,26 @@ static const struct gpio_driver_api gpio_pca9554_drv_api_funcs = {
 };
 
 /**
+ * @brief Check if a device is present on the bus
+ *
+ * @param[in] bus	i2c bus struct.
+ *
+ * @return true if present, false otherwise.
+ */
+static bool pca9554_present_on_bus(const struct i2c_dt_spec *bus)
+{
+	uint8_t dst;
+
+	struct i2c_msg msg = {
+		.buf = &dst,
+		.len = 0U,
+		.flags = I2C_MSG_WRITE | I2C_MSG_STOP,
+	};
+
+	return !i2c_transfer_dt(bus, &msg, 1);
+}
+
+/**
  * @brief Initialization function of PCA9554
  *
  * @param[in] dev	Device struct.
@@ -297,6 +317,11 @@ static int gpio_pca9554_init(const struct device *dev)
 
 	if (!device_is_ready(config->bus.bus)) {
 		LOG_ERR("I2C device is not ready!");
+		return -ENODEV;
+	}
+
+	if (!pca9554_present_on_bus(&config->bus)) {
+		LOG_ERR("addr[0x%X]: no device detected.", config->bus.addr);
 		return -ENODEV;
 	}
 
