@@ -1,7 +1,6 @@
 &i2c0 {
         pca9554: pca9554@27 {
         compatible = "irnas,pca9554";
-        label = "pca9554";
         reg = <0x27>;
         gpio-controller;
         #gpio-cells = <2>;
