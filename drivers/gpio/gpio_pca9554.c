@@ -68,11 +68,11 @@ static int read_port_regs(const struct device *dev, uint8_t reg, uint8_t *buf)
 
 	ret = i2c_burst_read_dt(&config->bus, reg, buf, sizeof(*buf));
 	if (ret) {
-		LOG_ERR("ADDR[0x%X]: error reading register 0x%X (%d)", config->bus.addr, reg, ret);
+		LOG_ERR("addr[0x%X]: error reading register 0x%X (%d)", config->bus.addr, reg, ret);
 		return ret;
 	}
 
-	LOG_DBG("ADDR[0x%X]: read: REG[0x%X] = 0x%X", config->bus.addr, reg, *buf);
+	LOG_DBG("addr[0x%X]: read: REG[0x%X] = 0x%X", config->bus.addr, reg, *buf);
 
 	return 0;
 }
@@ -91,13 +91,13 @@ static int write_port_regs(const struct device *dev, uint8_t reg, uint8_t *cache
 {
 	const struct gpio_pca9554_config *const config = dev->config;
 
-	LOG_DBG("ADDR[0x%X]: write: REG[0x%X] = 0x%02X", config->bus.addr, reg, value);
+	LOG_DBG("addr[0x%X]: write: REG[0x%X] = 0x%02X", config->bus.addr, reg, value);
 
 	uint8_t buf[] = {reg, value};
 	int ret = i2c_write_dt(&config->bus, buf, sizeof(buf));
 
 	if (ret) {
-		LOG_ERR("ADDR[0x%X]: error writing to register 0x%X (err: %d)", config->bus.addr,
+		LOG_ERR("addr[0x%X]: error writing to register 0x%X (err: %d)", config->bus.addr,
 			reg, ret);
 		return ret;
 	}
@@ -170,7 +170,7 @@ static int gpio_pca9554_configure(const struct device *dev, gpio_pin_t pin, gpio
 
 	ret = setup_pin_dir(dev, pin, flags);
 	if (ret) {
-		LOG_ERR("ADDR[0x%X]: error setting pin direction (%d)", config->bus.addr, ret);
+		LOG_ERR("addr[0x%X]: error setting pin direction (%d)", config->bus.addr, ret);
 	}
 
 	k_sem_give(&drv_data->lock);
@@ -316,7 +316,7 @@ static int gpio_pca9554_init(const struct device *dev)
 	struct gpio_pca9554_drv_data *const drv_data = dev->data;
 
 	if (!device_is_ready(config->bus.bus)) {
-		LOG_ERR("I2C device is not ready!");
+		LOG_ERR("i2c device is not ready!");
 		return -ENODEV;
 	}
 
